@@ -6,8 +6,6 @@ using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
     {
-		public bool isPlayerDeath; 	
-
         public bool m_IsWalking;
 		public bool m_IsSneaking;
         [SerializeField] private bool m_IsPeeking;

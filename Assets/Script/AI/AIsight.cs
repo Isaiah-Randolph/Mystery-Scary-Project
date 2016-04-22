@@ -4,12 +4,13 @@ using System.Collections;
 public class AIsight : MonoBehaviour {
 	public float fieldOfViewAngle = 110f;           // Number of degrees, centred on forward, for the enemy see.
 	public bool playerInSight;                      // Whether or not the player is currently sighted.
+	public bool playerIsHeard;
 	public Vector3 personalLastSighting;            // Last place this enemy spotted the player.
 
 	private SphereCollider col;                     // Reference to the sphere collider trigger component.
 	private GameObject player;                      // Reference to the player.
 	private Vector3 previousSighting;               // Where the player was sighted last frame.
-	private 
+
 	// Use this for initialization
 	void Start () {
 		col = GetComponent<SphereCollider>();
@@ -31,11 +32,14 @@ public class AIsight : MonoBehaviour {
 			if (!player.GetComponent<PlayerController> ().m_IsSneaking && !playerInSight) {	
 				// ... set the last personal sighting of the player to the player's current position.
 				personalLastSighting = player.transform.position;
+				// player is heard by AI
+				playerIsHeard = true;
 			}
 		}
 	}
-	void onTriggerStay(Collider body) {
-		if (body == player){
+	void OnTriggerStay(Collider body) {
+		if (body.gameObject.tag == "Player"){
+			print ("trigger stay");
 			// By default the player is not in sight.
 			playerInSight = false;
 
@@ -66,8 +70,10 @@ public class AIsight : MonoBehaviour {
 	}
 
 	void OnTriggerExit(Collider body){
-		if (body == player) {
+		if (body.gameObject.tag == "Player") {
+			print ("triggerexit");
 			playerInSight = false;
+			playerIsHeard = false;
 		}
 	}
 }

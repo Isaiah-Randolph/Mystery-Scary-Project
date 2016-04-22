@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 1ff369d919b7c144e877d1f769875412
-timeCreated: 1459951644
+guid: 6718832ebe098ca459f73e6ba9b5a7f2
+timeCreated: 1461294426
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,8 +9,9 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Stairwell.001
-    6400000: //RootNode
+    4300000: HotelFloor
+    7400000: Take 001
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -37,7 +38,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 1
+    addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -69,7 +70,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
