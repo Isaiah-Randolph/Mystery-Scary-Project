@@ -18,7 +18,6 @@ public class AIBehaviour : MonoBehaviour {
 
 		playerstate = player.GetComponent<PlayerState> ();
 
-
 		//start patrolling
 		GotoNextPoint ();
 	}
@@ -37,7 +36,6 @@ public class AIBehaviour : MonoBehaviour {
 		else
 			//... patrol the floor for player
 			patrolling ();
-			
 	}
 
 	void patrolling() {

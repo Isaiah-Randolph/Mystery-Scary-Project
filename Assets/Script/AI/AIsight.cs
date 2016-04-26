@@ -39,7 +39,6 @@ public class AIsight : MonoBehaviour {
 	}
 	void OnTriggerStay(Collider body) {
 		if (body.gameObject.tag == "Player"){
-			print ("trigger stay");
 			// By default the player is not in sight.
 			playerInSight = false;
 
@@ -71,7 +70,6 @@ public class AIsight : MonoBehaviour {
 
 	void OnTriggerExit(Collider body){
 		if (body.gameObject.tag == "Player") {
-			print ("triggerexit");
 			playerInSight = false;
 			playerIsHeard = false;
 		}
