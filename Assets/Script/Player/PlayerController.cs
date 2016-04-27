@@ -134,9 +134,9 @@ public class PlayerController : MonoBehaviour
             m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
 
             ProgressStepCycle(speed);
-            //UpdateCameraPosition(speed);
-            CrouchUpdate();
-            PeekUpdate();
+            UpdateCameraPosition(speed);
+            //CrouchUpdate();
+            //PeekUpdate();
 			TabUpdate ();
 
             m_MouseLook.UpdateCursorLock();
@@ -274,13 +274,13 @@ public class PlayerController : MonoBehaviour
             // On standalone builds, walk/run speed is modified by a key press.
             // keep track of whether or not the character is walking or running
             m_IsWalking = !Input.GetButton("Sprint");
-            m_IsSneaking = Input.GetButton("Sneak");
-            m_IsPeeking = Input.GetButton("Peek");
+            //m_IsSneaking = Input.GetButton("Sneak");
+            //m_IsPeeking = Input.GetButton("Peek");
 			m_IsTab = Input.GetButton("Tab");
 #endif
             // set the desired speed to be walking or running
             speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
-            if (m_IsSneaking) {speed = m_SneakSpeed;}
+            //if (m_IsSneaking) {speed = m_SneakSpeed;}
             m_Input = new Vector2(horizontal, vertical);
 
             // normalize input if it exceeds 1 in combined length:
