@@ -225,22 +225,23 @@ public class PlayerController : MonoBehaviour
 
 	public void Peeks(Transform headpos,Transform bodypos, float starttime)
     {
-    	Vector3 initCameraPosition, finalCameraPosition;
+		//Better if i use animation instead when ready.
+    	Vector3 initCameraPosition, finalCameraPosition, currCameraPosition;
 
 		//relocate player to new postion
 		if (m_IsInteracting) {
-			transform.position = bodypos.position;
+			//transform.position = bodypos.position;
 			transform.rotation = bodypos.rotation;
 		}
 
 		initCameraPosition = transform.position + m_OriginalCameraPosition;
 		finalCameraPosition = headpos.position;
+		currCameraPosition = m_Camera.transform.position;
+		float timelapse = (Time.time - starttime);
+        float timefraction = timelapse / 10.0f;
 
-		float dist = (Time.time - starttime) * 0.4f;
-        float currdist = dist / 0.4f;
-
-		m_Camera.transform.position = m_IsInteracting ? Vector3.Lerp(initCameraPosition, finalCameraPosition, currdist) : 
-			Vector3.Lerp(finalCameraPosition, initCameraPosition, currdist);
+		m_Camera.transform.position = m_IsInteracting ? Vector3.Lerp(currCameraPosition, finalCameraPosition, timefraction) : 
+			Vector3.Lerp(currCameraPosition, initCameraPosition, timefraction);
 	}
 
 	private void TabUpdate () 
