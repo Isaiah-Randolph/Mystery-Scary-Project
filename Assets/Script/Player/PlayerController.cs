@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 	public bool m_IsSneaking;
 	public bool m_IsInteracting = false;
 	public bool m_IsTab;
+	public bool m_CamOverride = false;
     [SerializeField] private float m_WalkSpeed;
     [SerializeField] private float m_RunSpeed;
     [SerializeField] private float m_SneakSpeed;
@@ -223,25 +224,28 @@ public class PlayerController : MonoBehaviour
                 Vector3.Lerp(finalCameraPosition, initCameraPosition, currheight);
         }
 
-	public void Peeks(Transform headpos,Transform bodypos, float starttime)
+	public void Peeks(Transform headpos, float starttime)
     {
 		//Better if i use animation instead when ready.
     	Vector3 initCameraPosition, finalCameraPosition, currCameraPosition;
-
-		//relocate player to new postion
-		if (m_IsInteracting) {
-			//transform.position = bodypos.position;
-			transform.rotation = bodypos.rotation;
-		}
 
 		initCameraPosition = transform.position + m_OriginalCameraPosition;
 		finalCameraPosition = headpos.position;
 		currCameraPosition = m_Camera.transform.position;
 		float timelapse = (Time.time - starttime);
         float timefraction = timelapse / 10.0f;
-
+		
+		// move camera to position
 		m_Camera.transform.position = m_IsInteracting ? Vector3.Lerp(currCameraPosition, finalCameraPosition, timefraction) : 
 			Vector3.Lerp(currCameraPosition, initCameraPosition, timefraction);
+	}
+
+	public void RotatePlayer( Transform init, Transform end, float starttime, float timetaken, bool entering = true) {		
+		float timelapse = (Time.time - starttime);
+		float timefraction = timelapse / timetaken;
+		//Rotate the body;
+		transform.rotation = entering ? Quaternion.Slerp(init.rotation, end.rotation, timefraction) :
+			Quaternion.Slerp(end.rotation,init.rotation, timefraction);
 	}
 
 	private void TabUpdate () 
@@ -256,11 +260,11 @@ public class PlayerController : MonoBehaviour
 		if (Input.GetButtonDown("Tab")) {tabStart = Time.time;}
 		if (Input.GetButtonUp("Tab")) { tabStart = Time.time; }
 
-		float dist = (Time.time - tabStart) * 1f;
-		float currheight = dist / (0.4f - 0.1f);
+		float timelapsed = (Time.time - tabStart);
+		float timefraction = timelapsed / 0.5f;
 
-		m_Tab.transform.localPosition = m_IsTab ? Vector3.Lerp (initTabPosition, finalTabPosition, currheight) : 
-			Vector3.Lerp (finalTabPosition, initTabPosition, currheight);
+		m_Tab.transform.localPosition = m_IsTab ? Vector3.Lerp (initTabPosition, finalTabPosition, timefraction) : 
+			Vector3.Lerp (finalTabPosition, initTabPosition, timefraction);
 	}
 
         private void GetInput(out float speed)
@@ -299,11 +303,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-
-        private void RotateView()
-        {
-            m_MouseLook.LookRotation (transform, m_Camera.transform);
-        }
+	private void RotateView()
+	{
+		// if not override by other camera action, then player can control camera.
+		if (!m_CamOverride) {
+			m_MouseLook.LookRotation (transform, m_Camera.transform);
+		}
+	}
 
 
         private void OnControllerColliderHit(ControllerColliderHit hit)

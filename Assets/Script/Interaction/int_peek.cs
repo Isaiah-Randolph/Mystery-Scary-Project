@@ -9,11 +9,15 @@ public class int_peek : MonoBehaviour {
 
 	public Transform Headpos;
 	public Transform Bodypos;
+	private Transform initPos;
 	private	float starttime;
+
+	private bool entering = false;
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag ("Player");
 		playerscript = player.GetComponent<PlayerController> ();
+		initPos = player.transform;
 	}
 
 	void Update () {
@@ -22,15 +26,24 @@ public class int_peek : MonoBehaviour {
 			if (!playerscript.m_IsInteracting) {
 				playerscript.m_IsInteracting = true;
 				starttime = Time.time;
+				entering = true;
 			} else {
 				playerscript.m_IsInteracting = false;
 				starttime = Time.time;
+				entering = false;
 			}
 		}
 
 		// call the peeking function
 		if (inTrigger) {
-			playerscript.Peeks (Headpos, Bodypos, starttime);
+			playerscript.Peeks (Headpos, starttime);
+			playerscript.RotatePlayer (initPos, Bodypos, starttime, 1.0f, entering);
+		} 
+	}
+
+	void OnTriggerEnter(Collider body) {
+		if (body.gameObject.tag == "Player") {
+			initPos = player.transform;
 		}
 	}
 
