@@ -29,13 +29,14 @@ public class AIsight : MonoBehaviour {
 		// ... and if the player is within hearing range...
 		if (Vector3.Distance (player.transform.position, transform.position) <= col.radius) {
 			// if player is not sneaking and not in sight
-			if (!player.GetComponent<PlayerController> ().m_IsSneaking && !playerInSight) {	
+			if (player.GetComponent<PlayerState> ().isMoving && !playerInSight) {	
 				// ... set the last personal sighting of the player to the player's current position.
 				personalLastSighting = player.transform.position;
 				// player is heard by AI
 				playerIsHeard = true;
 			}
 		}
+		print (playerIsHeard + " " +  playerInSight);
 	}
 	void OnTriggerStay(Collider body) {
 		if (body.gameObject.tag == "Player"){
