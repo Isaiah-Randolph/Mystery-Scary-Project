@@ -3,8 +3,8 @@ using System.Collections;
 
 public class AIsight : MonoBehaviour {
 	public float fieldOfViewAngle = 110f;           // Number of degrees, centred on forward, for the enemy see.
-	public bool playerInSight;                      // Whether or not the player is currently sighted.
-	public bool playerIsHeard;
+	public bool playerInSight =  false;                      // Whether or not the player is currently sighted.
+	public bool playerIsHeard = false;
 	public Vector3 personalLastSighting;            // Last place this enemy spotted the player.
 
 	private SphereCollider col;                     // Reference to the sphere collider trigger component.
@@ -29,14 +29,16 @@ public class AIsight : MonoBehaviour {
 		// ... and if the player is within hearing range...
 		if (Vector3.Distance (player.transform.position, transform.position) <= col.radius) {
 			// if player is not sneaking and not in sight
-			if (player.GetComponent<PlayerState> ().isMoving && !playerInSight) {	
+			if (player.GetComponent<PlayerState> ().isMoving && !playerInSight && !GetComponent<AIBehaviour>().searching) {	
 				// ... set the last personal sighting of the player to the player's current position.
-				personalLastSighting = player.transform.position;
+				//personalLastSighting = player.transform.position;
 				// player is heard by AI
 				playerIsHeard = true;
+				GetComponent<AIBehaviour> ().StartSearchTimer ();
+				GetComponent<AIBehaviour> ().GetSearchPoints ();
 			}
 		}
-		print (playerIsHeard + " " +  playerInSight);
+		//print (playerIsHeard + " " +  playerInSight);
 	}
 	void OnTriggerStay(Collider body) {
 		if (body.gameObject.tag == "Player"){
@@ -72,7 +74,7 @@ public class AIsight : MonoBehaviour {
 	void OnTriggerExit(Collider body){
 		if (body.gameObject.tag == "Player") {
 			playerInSight = false;
-			playerIsHeard = false;
+			//playerIsHeard = false;
 		}
 	}
 }
